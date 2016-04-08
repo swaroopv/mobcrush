@@ -66,8 +66,10 @@ public class RelatedProductsTest {
     @Test
     public void checkRelatedCustomer(){
         assertEquals(rp.getRelatedCustomer(c1.id,2), c2.id);
-        assertEquals(rp.getRelatedCustomer(c4.id,2), c2.id);
-        assertEquals(rp.getRelatedCustomer(c3.id,1), c1.id);
+        assertEquals(rp.getRelatedCustomer(c4.id,4), c6.id);
+        assertEquals(rp.getRelatedCustomer(c3.id,3), c1.id);
+        assertEquals(rp.getRelatedCustomer(c3.id,4), c4.id);
+        //customer id not found
         assertEquals(rp.getRelatedCustomer(7,1), -1);
     }
 }

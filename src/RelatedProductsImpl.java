@@ -17,7 +17,7 @@ public class RelatedProductsImpl implements RelatedProducts {
 
     @Override
     public ArrayList<Long> getRelatedProducts(long customerID, long productId, int numProducts) {
-        //builds  a HashMap of productId -> unique count.
+        //builds  a HashMap of productId -> total count.
         // when customer has bought productId, all other products he bought are added to HashMap
         // return top products according to the count
         ArrayList<Long> out = new ArrayList<Long>();
@@ -54,13 +54,19 @@ public class RelatedProductsImpl implements RelatedProducts {
 
     @Override
     public long getRelatedCustomer(long customerID, int productID) {
-        //returns a customer who has largest intersection of products and intersection has productID
+        //returns a customer who has highest similarity score
+        //  Similarity score is defined as
+        // score = (1.0 + len(intersection))/(1.0 + max(len(set1), len(set2))
+        //customer returned should also have bought productID
         //if none matches it returns -1
+
         HashSet<Long> cp = customerProductMap.get(customerID);
         HashSet<Long> t;
         HashSet<Long> intersection;
         long relatedCustomer = -1;
-        long max = 0;
+        double max = 0.0;
+        double similarityScore = 0.0;
+
         if(cp == null)
             return relatedCustomer;
 
@@ -72,8 +78,9 @@ public class RelatedProductsImpl implements RelatedProducts {
             if(t.contains((long)productID)){
                 intersection = new HashSet<Long>(cp);
                 intersection.retainAll(t);
-                if(intersection.size() > max){
-                    max = intersection.size();
+                similarityScore = (1.0 + intersection.size())/(1.0 + Math.max(cp.size(),t.size()));
+                if(similarityScore > max){
+                    max = similarityScore;
                     relatedCustomer = cid;
                 }
             }

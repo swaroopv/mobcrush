@@ -29,7 +29,7 @@ public class ProductNotifierImpl implements ProductNotifier {
             if(productMap.containsKey(productId)) {
                 int i = 0, j = 0, k = 0;
                 while(k < numCustomersToBeNotified && i < t1.size() && j < t2.size()) {
-                    //compare dates and customer who date is lesser
+                    //compare dates and customer whose date is earlier
                     if(t1.get(i).getValue().before(t2.get(j).getValue()))
                         out.add(t1.get(i++).getKey().id);
                     else
